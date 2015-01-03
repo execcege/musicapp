@@ -1,6 +1,7 @@
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+import sys
 
 class ClientHandler(tornado.web.RequestHandler):
     def get(self):
@@ -40,5 +41,6 @@ application = tornado.web.Application([
 ])
 
 if __name__ == "__main__":
-    application.listen(8888, '0.0.0.0') 
+    port = sys.argv[1]
+    application.listen(port, '0.0.0.0') 
     tornado.ioloop.IOLoop.instance().start()
