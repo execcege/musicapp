@@ -1,0 +1,73 @@
+<div class="container text-center">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">CEGE's Jukebox</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-click="setTimeout(searchYT(),0);" ng-disabled="loading || apiLoading">Submit</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div ng-if="loading || apiLoading">
+        <i class="fa fa-spinner fa-spin fa-5x"></i>
+    </div>
+    <div ng-if="!loading && !apiLoading">
+        <div ng-if="searchResult.length == 0">
+            <div class="row" style="padding-top: 15px">
+                Aucun résultat de recherche à afficher
+            </div>
+        </div>
+        <div ng-if="searchResult.length != 0">
+            <div class="row base-class" style="padding-top: 15px"  ng-repeat="result in searchResult" ng-class="{added: (added.indexOf(result.id.videoId) > -1)}" ng-if="result.id.kind == 'youtube#video'">
+                <div class="col-xs-6">
+                    <img ng-src="{{result.snippet.thumbnails.default.url}}">
+                </div>
+                <div class="col-xs-6">
+                    <h5>{{result.snippet.title}}</h5>
+                    <a class="btn btn-primary" ng-click="open(500, result)" ng-disabled="added.indexOf(result.id.videoId) > -1">Add video</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="addModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add video to queue</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="padding-top: 15px">
+            <div class="col-xs-6">
+                <img src="{{video.snippet.thumbnails.default.url}}">
+            </div>
+            <div class="col-xs-6">
+                <h5>{{video.snippet.title}}</h5>
+            </div>
+        </div>
+        <div class="row" style="padding-top: 15px">
+            <div class="form-group col-xs-6 col-xs-offset-3" ng-class="{ 'has-error': error}">
+                <label for="pass" class="control-label">Password: </label>
+                <input type="text" class="form-control" id="pass" ng-model="password" placeholder="######">
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="addVideo()" ng-disabled="password.length != 6">Add</button>
+        <button class="btn btn-warning" ng-click="closeRecallModal()">Cancel</button>
+    </div>
+</script>
