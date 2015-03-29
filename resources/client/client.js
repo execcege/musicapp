@@ -1,3 +1,10 @@
+var tag = document.createElement('script');
+
+tag.src = "https://apis.google.com/js/client.js?onload=onClientLoad";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+
 var apiLoaded = false;
 
 // Called automatically when JavaScript client library is loaded.
